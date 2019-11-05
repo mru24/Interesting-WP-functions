@@ -20,6 +20,24 @@ function contactform7_before_send_mail( $form_to_DB ) {
 remove_all_filters ('wpcf7_before_send_mail');
 add_action( 'wpcf7_before_send_mail', 'contactform7_before_send_mail' );
 
+
+// DISPLAY DATA FROM DB
+function my_shortcode($args) {
+
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT * FROM wp_cf7_test");
+	if(!empty($results)) {
+		foreach ($results as $result) {
+			echo '<h2>' . $result->name . '</h2>';
+		}
+	}	
+}
+
+function register_my_shortcode() {
+	add_shortcode('my_sc', 'my_shortcode');
+}
+add_action('init', 'register_my_shortcode');
+
 // ******************************************************************************
 
 // Limit words in text
